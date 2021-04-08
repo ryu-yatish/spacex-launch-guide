@@ -6,14 +6,14 @@ import Navbar from './components/navbar';
 
 
 export default function App() {
-  const [data, setData] = useState([])
-  const [q,setQ] =useState("")
+  // const [data, setData] = useState([])
+  // const [q,setQ] =useState("")
 
-  useEffect(()=>{
-    fetch("https://api.spaceXdata.com/v3/launches?limit=100")
-    .then(response => response.json())
-    .then((json) => setData(json));
-  }, []);
+  // useEffect(()=>{
+  //   fetch("https://api.spaceXdata.com/v3/launches?limit=100")
+  //   .then(response => response.json())
+  //   .then((json) => setData(json));
+  // }, []);
 
   return (
     <div className="App">
