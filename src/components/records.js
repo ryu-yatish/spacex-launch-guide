@@ -54,22 +54,23 @@ const Records = () => {
   function onFilterClick(){
     setQuery('https://api.spaceXdata.com/v3/launches?limit=100')
     var url="https://api.spaceXdata.com/v3/launches?limit=100"
-    fetchdata(url)
+    
     if (launch) {
       setQuery(url+'&launch_success=true')
-      fetchdata(url+'&launch_success=true')
+      
       url = url+'&launch_success=true';
     }
     if (land) {
         setQuery(url+'&land_success=true')
-        fetchdata(url+'&land_success=true')
+        
         url= url+'&land_success=true';
     }
     if(year){
       setQuery(url+"&launch_year="+year.toString())
-      fetchdata((url+"&launch_year="+year.toString()))
+      
+      url = url +"&launch_year="+year.toString()
     }
-    
+    fetchdata(url)
     console.warn(query)
     
   }
@@ -128,7 +129,36 @@ const Records = () => {
               Filter
             </Button>
             </div>
-            <div></div>
+            <div>
+            <MaterialTable style={{marginLeft:'10px', marginRight:'10px'}}
+              title="Spacex Launch Records"
+              columns={[
+                { title: 'Flight number', field: 'flight_number'},
+                { title: 'Mission name', field: 'mission_name'},
+                { title: 'Mission ID', field: 'mission_id'},
+                { title: 'Launch year', field: 'launch_year'},
+                
+              ]}
+              data = {data}
+              actions={[
+                {
+                  icon: 'refresh',
+                  tooltip: 'Refresh',
+                  isFreeAction: true,
+                  onClick: () => this.tableRef.current && this.tableRef.current.onQueryChange(),
+                }, 
+              ]}
+              options={{
+                
+                headerStyle: {
+                  backgroundColor: '#3f51b5',
+                  color: '#FFFF'
+                }}
+              }
+              
+            />
+            <br/><br/><br/>
+            </div>
             
         </div>
         
