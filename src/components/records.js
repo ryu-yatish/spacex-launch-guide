@@ -2,13 +2,10 @@ import React from 'react';
 import MaterialTable from 'material-table';
 import { useState, useEffect } from 'react';
 import '../App.css';
-import axios from 'axios'
-import { Card } from "react-bootstrap"
 import Checkbox from '@material-ui/core/Checkbox';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
-import history from 'history/browser'
 import MenuItem from '@material-ui/core/MenuItem';
 import { Check } from '@material-ui/icons';
 import Button from '@material-ui/core/Button';
