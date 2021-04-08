@@ -1,24 +1,27 @@
 import React from 'react';
 import MaterialTable from 'material-table';
 import { useState, useEffect } from 'react';
+import '../App.css';
 import axios from 'axios'
 import { Card } from "react-bootstrap"
 import Checkbox from '@material-ui/core/Checkbox';
-import Switch from '@material-ui/core/Switch';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
-import { makeStyles } from '@material-ui/core/styles';
-import InputLabel from '@material-ui/core/InputLabel';
+import history from 'history/browser'
 import MenuItem from '@material-ui/core/MenuItem';
 import { Check } from '@material-ui/icons';
 import Button from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
+import {BrowserRouter as Router, Switch, Route,useLocation} from 'react-router-dom'
+import queryString from 'query-string'
 
 
 const Records = () => {
   const [query, setQuery] = useState('https://api.spaceXdata.com/v3/launches?limit=100')
+  let location = useLocation();
+  var searchq = location.search;
+  const {launchq, landq,yearq} = queryString.parse(searchq)
   const [launch, setLaunch] = useState(false)
   const [land, setLand] = useState(false)
   const [year, setYear] = useState(0)
@@ -34,7 +37,24 @@ const Records = () => {
       setLoading(false)
   }
   useEffect(async ()=>{
-    fetchdata(query)
+    setQuery('https://api.spaceXdata.com/v3/launches?limit=100')
+    var url="https://api.spaceXdata.com/v3/launches?limit=100"
+    if (launchq) {
+      setQuery(url+'&launch_success=true')
+      
+      url = url+'&launch_success=true';
+    }
+    if (landq) {
+        setQuery(url+'&land_success=true')
+        
+        url= url+'&land_success=true';
+    }
+    if(yearq){
+      setQuery(url+"&launch_year="+yearq.toString())
+      
+      url = url +"&launch_year="+yearq.toString()
+    }
+    fetchdata(url)
   },[])
 
   
@@ -55,11 +75,11 @@ const Records = () => {
   function onFilterClick(){
     setQuery('https://api.spaceXdata.com/v3/launches?limit=100')
     var url="https://api.spaceXdata.com/v3/launches?limit=100"
-    
     if (launch) {
       setQuery(url+'&launch_success=true')
       
       url = url+'&launch_success=true';
+    
     }
     if (land) {
         setQuery(url+'&land_success=true')
@@ -75,16 +95,6 @@ const Records = () => {
     console.warn(query)
     
   }
-  function jsonToSCSS(stringdata=``, data={}) {
-    /* JSON.parse can throw. Always be ready for that. */
-    try { data = JSON.parse(stringdata); }
-    catch (e) { console.warn(e); return ``; }
-  
-    return Object.keys(data)
-                 .map(key => `${key}: ${data[key]};`)
-                 .join('\n');
-  }
-  
   return (
     
     <div>
@@ -98,7 +108,7 @@ const Records = () => {
               <FormGroup aria-label="position" row>
               <FormControlLabel
               value="launchc"
-              control={<Checkbox color="primary" onChange={(e)=>changeQuery(e)}/>}
+              control={<Checkbox  color="primary" onChange={(e)=>changeQuery(e)}/>}
               label="Launch successful"
               labelPlacement="start"
               />
@@ -108,12 +118,12 @@ const Records = () => {
               label="landing successful"
               labelPlacement="start"
               />
-              <div>     </div>
-              <Select value={year}
+              <div class ="selecdiv">     
+              <Select value={''}
               displayEmpty
               onChange={updateSelectedVal}
               >
-                <MenuItem value={0}>  year  </MenuItem>
+                <MenuItem value={''}>  year  </MenuItem>
                 <MenuItem value={2005}>2005</MenuItem>
                 <MenuItem value={2006}>2006</MenuItem>
                 <MenuItem value={2007}>2007</MenuItem>
@@ -132,7 +142,7 @@ const Records = () => {
                 <MenuItem value={2020}>2020</MenuItem>
                 <MenuItem value={2021}>2021</MenuItem>
                 </Select>
-               
+               </div>
             
               </FormGroup>
             </FormControl>
@@ -205,6 +215,7 @@ const Records = () => {
       }
        
     </div>
+    
   )
 }
 
